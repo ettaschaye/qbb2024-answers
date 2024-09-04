@@ -1,5 +1,5 @@
 # Day 2 Lunch Assignment
-Etta Schaye
+Etta Schaye <br>
 September 4th, 2024
 
 ## Exercise 1 
