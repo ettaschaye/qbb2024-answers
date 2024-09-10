@@ -88,3 +88,8 @@ expression_gap = expression_log_transformed_sorted[:,-1] - expression_log_transf
 more_than_10 = numpy.where(expression_gap > 10) #find position of elements with a value greater than 10
 print(numpy.shape(more_than_10)) #print the shape as a shortcut to identifying the number of elements
 
+#Question 8
+#There are 33 genes with a 10-fold (when log-transformed) difference between their expression in their most and second-most expressed tissues
+'''
+./day3-homework.py GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_median_tpm.gct
+'''
