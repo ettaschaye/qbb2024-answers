@@ -100,7 +100,7 @@ geom_histogram(mapping = aes(n_paternal_dna), alpha = 0.5, fill = "lightblue") +
  #I'm going to use a t-test because I am evaluating how a categorical variable (origin parent for DNM)
  #predicts the mean value of another variable (the number of DNM)
 
-t.test(x = dnm_summary$n_paternal_dna, y = dnm_summary$n_maternal_dna)
+t.test(x = dnm_summary$n_paternal_dna, y = dnm_summary$n_maternal_dna, paired = TRUE)
 
 #After performing your test, answer the following questions:
 #What statistical test did you choose? Why?
@@ -111,6 +111,7 @@ t.test(x = dnm_summary$n_paternal_dna, y = dnm_summary$n_maternal_dna)
 
 #Interpret your result as it relates to the number of paternally and maternally inherited DNMs.
  #There are a statistically significant number of paternally and maternally DNMs
+ #On average, there are 39.23485 more paternally contributed DNMs than maternally contributed DNMs
 
 
 dnm_by_age
