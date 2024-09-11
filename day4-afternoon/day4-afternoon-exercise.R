@@ -3,6 +3,8 @@
 library(tidyverse)
 library(broom)
 
+setwd("/Users/cmdb/qbb2024-answers/day4-afternoon/")
+
 #read in the data
 dnm <- read_csv("aau1043_dnm.csv") 
 ages <- read_csv("aau1043_parental_age.csv") #mother and father age at birth
@@ -91,10 +93,26 @@ geom_histogram(mapping = aes(n_paternal_dna), alpha = 0.5, fill = "lightblue") +
   ylab("Number of individuals")
 
 #Step 2.6
-#Still working on this...
+#Now that you’ve visualized this relationship
+#you want to test whether there is a significant difference
+#between the number of maternally vs. paternally inherited DNMs per proband.
+#What would be an appropriate statistical model to test this relationship? Fit this model to the data.
+ #I'm going to use a t-test because I am evaluating how a categorical variable (origin parent for DNM)
+ #predicts the mean value of another variable (the number of DNM)
+
+t.test(x = dnm_summary$n_paternal_dna, y = dnm_summary$n_maternal_dna)
+
+#After performing your test, answer the following questions:
+#What statistical test did you choose? Why?
+ #See above
+
+#Was your test result statistically significant? 
+ #Yes, the p-value is less than 2.2e-16
+
+#Interpret your result as it relates to the number of paternally and maternally inherited DNMs.
+ #There are a statistically significant number of paternally and maternally DNMs
 
 
-  
 dnm_by_age
 
 
