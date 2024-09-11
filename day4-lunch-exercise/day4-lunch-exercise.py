@@ -85,25 +85,37 @@ for key, value in tissue_columns.items():
     print(key, len(value)) #print out the tissue type and length of the value
 
 #Find tissue with max number of samples
-max_value = 0
-max_tissue = ""
+max_value = 0 #assign the value 0 to the variable max_value
+max_tissue = "" #assign an empty string to the variable max_tissue
 
-for tissue, samples in tissue_columns.items():
-    if len(samples) >= max_value:
+#Return the key-value pairs for the dictionary tissue_columns
+#Then, if the length of the list of samples is greater than or equal to max_value (starting value is 0)...
+#set max_value to the length of the sample list and set max_tissue to the name of the tissue key associated with the longest list of samples
+#after that loop, print the final value of max_tissue and max_value
+for tissue, samples in tissue_columns.items():   
+    if len(samples) >= max_value:  
         max_value = len(samples)
         max_tissue = tissue
-print(max_tissue, max_value) #why do i get an error TypeError: '>=' not supported between instances of 'int' and 'str'
+print(max_tissue, max_value)
 
 
 #Find tissue with min number of samples
-min_value = 0
-min_tissue = ""
+min_value = 0 #assign the value 0 to the variable min_value
+min_tissue = "" #assign an empty string to the variable min_tissue
+
+#Return the key-value pairs for the dictionary tissue_columns
+#Then, if the length of the list of samples is less than or equal to min_value (starting value is 0)...
+#set min_value to the length of the sample list and set min_tissue to the name of the tissue key associated with the longest list of samples
+#after that loop, print the final value of min_tissue and min_value
 
 for tissue, samples in tissue_columns.items():
     if len(samples) <= min_value:
         min_value = len(samples)
         min_tissue = tissue
 print(min_tissue, min_value)
+
+#Muscle - Skeletal cells have the most samples: 803
+#Cells - Leukemia cell line (CML) have the fewest samples: 0
 
 """
 python ./day4-lunch-exercise.py gene_tissue.tsv GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct
