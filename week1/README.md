@@ -5,10 +5,12 @@
 ### Done in Python 3.12.3
 
 ### Import packages 
+```  
 import numpy
 import scipy
 import scipy.stats
-import math
+import math  
+```
 
 ## Exercise 1
 
@@ -18,7 +20,8 @@ import math
 desired_coverage = 3
 read_length = 100
 num_reads = int((genome_size * desired_coverage)/read_length)
-```
+```  
+
 30,000 100 bp reads are required 
 
 ## Step 1.2
@@ -30,11 +33,12 @@ num_reads = int((genome_size * desired_coverage)/read_length)
 **2. Calculate the end position that corresponds to the randomly calculated start position**
 **3. Take our array with a 0 at every position and add 1 to every value between the start and end position and save that as the new value**
 **Repeat this process for all 30,000 simulated reads**
-
+```
   for i in range(30000):
         startpos = numpy.random.randint(0,999900)
         endpos = startpos + 100 
         genome_coverage[startpos:endpos] += 1
+```
 
 **4. Save the coverage for each position in the genome as a text file**
 ```numpy.savetxt('genome_coverage.csv', genome_coverage, fmt='%d', delimiter=',')```
@@ -60,10 +64,14 @@ num_reads = int((genome_size * desired_coverage)/read_length)
 ```numpy.savetxt('poisson_results.csv', poisson_results, fmt='%.8e', delimiter=',')```
 ```numpy.savetxt('normal_estimates.csv', normal_estimates, fmt='%.8e', delimiter=',')```
 
-**In your simulation, how much of the genome has not been sequenced (has 0x coverage)?**
-50687 positions were not sequenced 
-**How well does this match Poisson expectations? How well does the normal distribution fit the data?**
-The Poisson estimate would be 49787 unsequenced nucleotides and the normal distribution predicts 51272 unsequenced nucleotides, so both distributions fit the simulated data fairly well on the low end. However, the normal distribution predicts higher coverage than what was simulated. 
+**In your simulation, how much of the genome has not been sequenced (has 0x coverage)?**  
+
+50687 positions were not sequenced   
+
+**How well does this match Poisson expectations? How well does the normal distribution fit the data?**  
+
+The Poisson estimate would be 49787 unsequenced nucleotides and the normal distribution predicts 51272 unsequenced nucleotides, so both distributions fit the simulated data fairly well on the low end. However, the normal distribution predicts higher coverage than what was simulated.   
+
 
 ## Step 1.5
 ### Repeat the simulation with 10X coverage 
@@ -73,7 +81,7 @@ genome_size = 1000000
 desired_coverage = 10
 read_length = 100
 num_reads = int((genome_size * desired_coverage)/read_length)
-```
+```  
 
 100,000 100 bp reads are required 
 
@@ -89,11 +97,12 @@ num_reads = int((genome_size * desired_coverage)/read_length)
 for i in range(100000):
     startpos = numpy.random.randint(0,999900)
     endpos = startpos + 100 
-    genome_coverage_10X[startpos:endpos] += 1
+    genome_coverage_10X[startpos:endpos] += 1  
+  ```  
 
   **4. Save the coverage for each position in the genome as a text file**
-numpy.savetxt('genome_coverage_10X.csv', genome_coverage_10X, fmt='%d', delimiter=',')
-```
+```numpy.savetxt('genome_coverage_10X.csv', genome_coverage_10X, fmt='%d', delimiter=',')```
+
 
 **5. Look within the genome coverage array and find the position with the highest value, which has been "sequenced" the most**
 ```maxcoverage_10X = numpy.max(genome_coverage_10X)```
@@ -116,10 +125,14 @@ numpy.savetxt('genome_coverage_10X.csv', genome_coverage_10X, fmt='%d', delimite
 ```numpy.savetxt('poisson_results_10X.csv', poisson_results, fmt='%.8e', delimiter=',')```
 ```numpy.savetxt('normal_estimates_10X.csv', normal_estimates, fmt='%.8e', delimiter=',')```
 
-**In your simulation, how much of the genome has not been sequenced (has 0x coverage)?**
-64 nucleotides have not been sequenced 
-**How well does this match Poisson expectations? How well does the normal distribution fit the data?**
-The Poisson estimate would be 45.4 unsequenced nucleotides and the normal distribution predicts 845 unsequenced nucleotides, so the Poisson estimate is fairly good and the normal distribution is a poorer predictor. The normal distribution overestimates coverage in general. 
+**In your simulation, how much of the genome has not been sequenced (has 0x coverage)?**  
+
+64 nucleotides have not been sequenced   
+
+**How well does this match Poisson expectations? How well does the normal distribution fit the data?**  
+
+The Poisson estimate would be 45.4 unsequenced nucleotides and the normal distribution predicts 845 unsequenced nucleotides, so the Poisson estimate is fairly good and the normal distribution is a poorer predictor. The normal distribution overestimates coverage in general.   
+
 ## Step 1.6
 
 ### Repeat the simulation with 30X coverage 
@@ -136,9 +149,12 @@ num_reads = int((genome_size * desired_coverage)/read_length)
 ### Produce a 1D array (genome_coverage_30X) with 1 million positions and a zero at every position
 ```genome_coverage_30X = numpy.zeros(1000000, dtype= int)```
 
-**In your simulation, how much of the genome has not been sequenced (has 0x coverage)?**
-4 positions were not sequenced 
-**How well does this match Poisson expectations? How well does the normal distribution fit the data?**
+**In your simulation, how much of the genome has not been sequenced (has 0x coverage)?**  
+
+4 positions were not sequenced   
+
+**How well does this match Poisson expectations? How well does the normal distribution fit the data?**  
+
 The Poisson estimate would be 0.0000000936 unsequenced nucleotides and the normal distribution predicts 0.0214 unsequenced nucleotides, so both distributions underestimate the number of missed nucleotides (though not by much). In general, Poisson slightly underestimates the actual coverage, while the normal distribution overestimates it.  
 
 ### Simulate sequencing 30X coverage of a 1 millon bp genome
@@ -217,9 +233,11 @@ conda activate graphviz
 ## Step 2.5
 **Assume that the maximum number of occurrences of any 3-mer in the actual genome is five. Using your graph from Step 2.4, write one possible genome sequence that would produce these reads. Record your answer in your README.md.**
 
-**Here is one version where the maximum number of occurences for any 3-mer is 3**
+**Here is one version where the maximum number of occurences for any 3-mer is 3**  
+
 TTC TCT CTT TTA TAT ATT TTG TGA GAT ATT TTC TCA CAT ATT TTT 
 
 ## Step 2.6
-**In a few sentences, what would it take to accurately reconstruct the sequence of the genome?**
+**In a few sentences, what would it take to accurately reconstruct the sequence of the genome?**  
+
 We would need to know how many times each 3-mer occurs. Just based on the de Brujin graph, this could be highly-repetitive genome of indeterminate length, or it could visit each node the minimum number of times required to solve the graph. My guess is that if you knew how many repeats there were of each k-mer, there are some de Brujin graphs that only have one solution, and some that have only a few solutions, but at minimum it would narrow the options down! 
