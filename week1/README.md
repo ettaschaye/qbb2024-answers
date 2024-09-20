@@ -172,7 +172,8 @@ for i in range(300000):
 **4. Save the coverage for each position in the genome as a text file**
 ```numpy.savetxt('genome_coverage_30X.csv', genome_coverage_30X, fmt='%d', delimiter=',')```
 
-**5. Look within the genome coverage array and find the position with the highest value, which has been "sequenced" the most**
+**5. Look within the genome coverage array and find the position with the highest value, which has been "sequenced" the most**  
+
 ```maxcoverage_30X = numpy.max(genome_coverage_30X)``
 
 **6. Define 0 as the lower bound of coverages observed and the upper bound is the maximum coverage observed for any position in the array + 1**
