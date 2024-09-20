@@ -33,7 +33,7 @@ num_reads = int((genome_size * desired_coverage)/read_length)
  ```for i in range(30000):
       startpos = numpy.random.randint(0,999900)
       endpos = startpos + 100 
-      genome_coverage[startpos:endpos] += 1 ```
+      genome_coverage[startpos:endpos] += 1```
 
 **4. Save the coverage for each position in the genome as a text file**
 ```numpy.savetxt('genome_coverage.csv', genome_coverage, fmt='%d', delimiter=',')```
