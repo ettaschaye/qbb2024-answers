@@ -23,26 +23,26 @@ num_reads = int((genome_size * desired_coverage)/read_length)
 
 ## Step 1.2
 ### Produce a 1D array (genome_coverage) with 1 million positions and a zero at every position
-genome_coverage = numpy.zeros(1000000, dtype= int)  
+```genome_coverage = numpy.zeros(1000000, dtype= int)```
 
 ### Simulate sequencing 3X coverage of a 1 millon bp genome
 **1. Use NumPy's pseudo-random number generator function to choose an integer between 0 and 999,900 to serve as our start position**
 **2. Calculate the end position that corresponds to the randomly calculated start position**
 **3. Take our array with a 0 at every position and add 1 to every value between the start and end position and save that as the new value**
 **Repeat this process for all 30,000 simulated reads**
-for i in range(30000):
-    startpos = numpy.random.randint(0,999900)
-    endpos = startpos + 100 
-    genome_coverage[startpos:endpos] += 1
+ ```for i in range(30000):
+      startpos = numpy.random.randint(0,999900)
+      endpos = startpos + 100 
+      genome_coverage[startpos:endpos] += 1 ```
 
 **4. Save the coverage for each position in the genome as a text file**
-numpy.savetxt('genome_coverage.csv', genome_coverage, fmt='%d', delimiter=',')
+```numpy.savetxt('genome_coverage.csv', genome_coverage, fmt='%d', delimiter=',')```
 
 **5. Look within the genome coverage array and find the position with the highest value, which has been "sequenced" the most**
-maxcoverage = numpy.max(genome_coverage) 
+```maxcoverage = numpy.max(genome_coverage)```
 
 **6. Define 0 as the lower bound of coverages observed and the upper bound is the maximum coverage observed for any position in the array + 1**
-xs = list(range(0, maxcoverage+1)) 
+```xs = list(range(0, maxcoverage+1))``` 
 
 ### Calculate probability functions
 **1. Calculate the Poisson probability mass function**
