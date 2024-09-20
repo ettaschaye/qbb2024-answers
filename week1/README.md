@@ -14,10 +14,10 @@ import math
 
 ## Step 1.1
 ### **How many 100bp reads are needed to sequence a 1Mbp genome to 3X coverage?**
-genome_size = 1000000
+```genome_size = 1000000
 desired_coverage = 3
 read_length = 100
-num_reads = int((genome_size * desired_coverage)/read_length)
+num_reads = int((genome_size * desired_coverage)/read_length)```
 
 30,000 100 bp reads are required 
 
