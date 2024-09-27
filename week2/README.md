@@ -43,3 +43,8 @@ I will be finding how many SNPs overlap each, finding the mean SNP/bp for each f
 
 ### Step 2.1 
 I need to write a bash script that loops through every minor allele frequency file and each feature bed file and use bedtools coverage to figure out how mant SNPs fall within each set of features
+
+I think chr1_snps_0.1.bed and equivalent files are the SNPs partitioned by minor allele frequency (0.1, 0.2, 0.3, 0.4, 0.5). I'm curious if 0.1 would be 0.0 through 0.0. I assume yes because these are all pretty common variants otherwise)
+
+The features we are using are exons, introns, cCREs (regulatory elements), and other.
+
