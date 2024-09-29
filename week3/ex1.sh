@@ -48,3 +48,23 @@ bwa index sacCer3.fa #index
 #There are 16 chromosomes in the yeast genome
 
 #Let's write a for loop
+
+#Defines the loop as applying to all files beginning with A01_ and ending with .fastq
+for file in A01_*.fastq
+ do
+ #Strip the prefix (path to the directory) and suffix (file extension) and save the base name as a variable called sample_name
+    sample_name=$(basename "$file" .fastq)
+    bwa mem -t 8 -R "@RG\tID:${sample_name}\tSM:${sample_name}\tPL:illumina" sacCer3.fa "$file" > "${file%.fastq}.sam" 
+done
+
+### Question 2.2 ###
+samtools view -c A01_09.sam
+#There are 669548 read alignments 
+
+### Question 2.3 ###
+samtools view -b -o A01_09.bam A01_09.sam
+samtools sort -o sorted_A01_09.bam A01_09.bam
+samtools index sorted_A01_09.bam
+samtools idxstats sorted_A01_09.bam
+#17815 reads from chrIII
+
