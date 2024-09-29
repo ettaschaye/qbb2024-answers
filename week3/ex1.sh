@@ -68,3 +68,13 @@ samtools index sorted_A01_09.bam
 samtools idxstats sorted_A01_09.bam
 #17815 reads from chrIII
 
+### Question 2.4 ###
+#OK I can update my for loop
+
+for file in A01_*.fastq
+ do
+    sample_name=$(basename "$file" .fastq)
+    bwa mem -t 8 -R "@RG\tID:${sample_name}\tSM:${sample_name}\tPL:illumina" sacCer3.fa "$file" > "${file%.fastq}.sam" 
+    samtools sort ${file} > "${sample_name}_sorted.bam"
+    samtools index "${sample_name}_sorted.bam" 
+done
