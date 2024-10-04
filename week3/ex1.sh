@@ -87,3 +87,5 @@ done
 #However, the SNPs at 113,137, 113,178, 113,252, 113,261, 113,285, 113,303, 113,305, 113,306, and 113,313 only appear in a single read each
 #That makes me less confident that they are real rather than just an error in sequencing 
 
+### Question 2.6 ###
+#The SNP is at chrI:825,834 and does not appear to be in a gene
