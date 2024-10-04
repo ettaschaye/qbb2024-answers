@@ -83,3 +83,7 @@ done
 
 ### Question 2.5 ###
 
+#I feel confident about the SNPs at 113,132, 113,207 and 113,326
+#However, the SNPs at 113,137, 113,178, 113,252, 113,261, 113,285, 113,303, 113,305, 113,306, and 113,313 only appear in a single read each
+#That makes me less confident that they are real rather than just an error in sequencing 
+
