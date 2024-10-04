@@ -61,7 +61,6 @@ ggplot(full_data_3X) +
   labs(title = "Simulated genome coverage 3X") +
   scale_color_manual(values = c("Poisson Predicted" = "blue", "Normal Predicted" = "red")) 
 ggsave("ex1_3x_cov.png", scale = 2)
-ggsave("ex1_*_cov.png")
 
 #Count how many times each coverage level occurred 
 print(full_data_3X)
