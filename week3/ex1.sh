@@ -49,13 +49,13 @@ bwa index sacCer3.fa #index
 
 #Let's write a for loop
 
-#Defines the loop as applying to all files beginning with A01_ and ending with .fastq
-for file in A01_*.fastq
- do
- #Strip the prefix (path to the directory) and suffix (file extension) and save the base name as a variable called sample_name
-    sample_name=$(basename "$file" .fastq)
-    bwa mem -t 8 -R "@RG\tID:${sample_name}\tSM:${sample_name}\tPL:illumina" sacCer3.fa "$file" > "${file%.fastq}.sam" 
-done
+# #Defines the loop as applying to all files beginning with A01_ and ending with .fastq
+# for file in A01_*.fastq
+#  do
+#  #Strip the prefix (path to the directory) and suffix (file extension) and save the base name as a variable called sample_name
+#     sample_name=$(basename "$file" .fastq)
+#     bwa mem -t 8 -R "@RG\tID:${sample_name}\tSM:${sample_name}\tPL:illumina" sacCer3.fa "$file" > "${file%.fastq}.sam" 
+# done
 
 ### Question 2.2 ###
 samtools view -c A01_09.sam
@@ -75,6 +75,11 @@ for file in A01_*.fastq
  do
     sample_name=$(basename "$file" .fastq)
     bwa mem -t 8 -R "@RG\tID:${sample_name}\tSM:${sample_name}\tPL:illumina" sacCer3.fa "$file" > "${file%.fastq}.sam" 
-    samtools sort ${file} > "${sample_name}_sorted.bam"
+    samtools sort -O bam -o ${sample_name}_sorted.bam "${file%.fastq}.sam" 
     samtools index "${sample_name}_sorted.bam" 
 done
+
+#The depth of coverage does not look like I expected it to. I don't see any part of the genome that exceeds ~15X coverage 
+
+### Question 2.5 ###
+
