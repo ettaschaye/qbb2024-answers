@@ -50,19 +50,17 @@ full_data_3X <- full_data_3X %>% mutate(poisson_predicted_n = probability_poisso
 full_data_3X <- full_data_3X %>% mutate(normal_predicted_n = probability_normal * 1000000)
 
 #Plot full data
-?pivot_longer
 ggplot(full_data_3X) +
   xlab("Simulated sequencing depth") +
   ylab("Number of nucleotides") +
   scale_x_discrete(limits = full_data_3X$depth, labels = full_data_3X$depth_label) +
   theme_bw() +
-  geom_col(aes(x = depth, y = n), fill = "red", alpha = 0.5) +
-  geom_col(aes(x = depth, y = poisson_predicted_n), fill = "blue", alpha = 0.5) +
-  geom_col(aes(x = depth, y = normal_predicted_n), fill = "gray", alpha = 0.5) +
-  annotate("text", x = 10, y = 100000, label = "Simulated distribution", color = "red") +
-  annotate("text", x = 10, y = 80000, label = "Poisson distribution", color = "blue") +
-  annotate("text", x = 10, y = 60000, label = "Normal distribution", color = "dark gray") +
-  labs(title = ("Simulated genome coverage 3X"))
+  geom_col(aes(x = depth, y = n), fill = "black", alpha = 0.5) +
+  geom_line(aes(x = depth, y = poisson_predicted_n, color = "Poisson Predicted"), alpha = 0.5) +
+  geom_line(aes(x = depth, y = normal_predicted_n, color = "Normal Predicted"), alpha = 0.5) +
+  labs(title = "Simulated genome coverage 3X") +
+  scale_color_manual(values = c("Poisson Predicted" = "blue", "Normal Predicted" = "red")) 
+ggsave("ex1_3x_cov.png", scale = 2)
 ggsave("ex1_*_cov.png")
 
 #Count how many times each coverage level occurred 
@@ -119,14 +117,12 @@ ggplot(full_data_10X) +
   ylab("Number of nucleotides") +
   scale_x_discrete(limits = full_data_10X$depth, labels = full_data_10X$depth_label) +
   theme_bw() +
-  geom_col(aes(x = depth, y = n), fill = "red", alpha = 0.5) +
-  geom_col(aes(x = depth, y = poisson_predicted_n), fill = "blue", alpha = 0.5) +
-  geom_col(aes(x = depth, y = normal_predicted_n), fill = "gray", alpha = 0.5) +
-  annotate("text", x = 21, y = 100000, label = "Simulated distribution", color = "red") +
-  annotate("text", x = 21, y = 80000, label = "Poisson distribution", color = "blue") +
-  annotate("text", x = 21, y = 60000, label = "Normal distribution", color = "dark gray") +
-  labs(title = ("Simulated genome coverage 10X"))
-  ggsave("ex1_10x_cov.png")
+  geom_col(aes(x = depth, y = n), fill = "black", alpha = 0.5) +
+  geom_line(aes(x = depth, y = poisson_predicted_n, color = "Poisson Predicted"), alpha = 0.5) +
+  geom_line(aes(x = depth, y = normal_predicted_n, color = "Normal Predicted"), alpha = 0.5) +
+  labs(title = "Simulated genome coverage 10X") +
+  scale_color_manual(values = c("Poisson Predicted" = "blue", "Normal Predicted" = "red")) 
+  ggsave("ex1_10x_cov.png", scale = 2)
 
 #Count how many times each coverage level occurred 
 print(full_data_10X)
@@ -182,14 +178,14 @@ ggplot(full_data_30X) +
   ylab("Number of nucleotides") +
   scale_x_discrete(limits = full_data_30X$depth, labels = full_data_30X$depth_label) +
   theme_bw() +
-  geom_col(aes(x = depth, y = n), fill = "red", alpha = 0.5) +
-  geom_col(aes(x = depth, y = poisson_predicted_n), fill = "blue", alpha = 0.5) +
-  geom_col(aes(x = depth, y = normal_predicted_n), fill = "gray", alpha = 0.5) +
-  annotate("text", x = 18, y = 100000, label = "Simulated distribution", color = "red") +
-  annotate("text", x = 18, y = 80000, label = "Poisson distribution", color = "blue") +
-  annotate("text", x = 18, y = 60000, label = "Normal distribution", color = "dark gray") +
-  labs(title = ("Simulated genome coverage 30X"))
+  geom_col(aes(x = depth, y = n), fill = "black", alpha = 0.5) +
+  geom_line(aes(x = depth, y = poisson_predicted_n, color = "Poisson Predicted"), alpha = 0.5) +
+  geom_line(aes(x = depth, y = normal_predicted_n, color = "Normal Predicted"), alpha = 0.5) +
+  labs(title = "Simulated genome coverage 30X") +
+  scale_color_manual(values = c("Poisson Predicted" = "blue", "Normal Predicted" = "red")) 
 ggsave("ex1_30X_cov.png", scale = 2)
+
+
 
 #Count how many times each coverage level occurred 
 print(full_data_30X)
