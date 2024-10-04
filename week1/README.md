@@ -238,6 +238,10 @@ conda activate graphviz
 
 TTC TCT CTT TTA TAT ATT TTG TGA GAT ATT TTC TCA CAT ATT TTT 
 
+**With the edges collapsed**
+
+TTCTTATTGATTCATTT
+
 ## Step 2.6
 **In a few sentences, what would it take to accurately reconstruct the sequence of the genome?**  
 
