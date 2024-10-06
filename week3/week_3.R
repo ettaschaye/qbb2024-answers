@@ -7,7 +7,7 @@ DP_dist <- read.table("DP.txt") %>% rename("read_depth" = "V1") %>%
 
 
 ggplot(AF_dist, aes(x = allele_frequency)) +
-  geom_histogram(bins = 11 ) +
+  geom_histogram(bins = 11, color = "white") +
   labs(title = "Allele frequency distribution", x = "Allele frequency", y = "Number of variants") +
   scale_x_continuous(breaks = seq(0, 1, by = 0.1)) +
    theme(panel.background = element_blank(),
@@ -29,3 +29,26 @@ ggplot(DP_dist, aes(x = read_depth)) +
 ggsave("DP_dist.png")
 
 
+biallelic <- read_tsv("biallelic.vcf", comment = "#", col_names = FALSE) 
+
+biallelic <- biallelic %>%
+  rename("CHROM" = "X1", "POS" = "X2", "A01_62"	= "X10", "A01_09" = "X19") %>%
+  select(CHROM, POS, A01_62, A01_09) %>%
+  mutate("A01_62_genotype" = substr(A01_62, 1, 1)) %>%
+  mutate("A01_09_genotype" = substr(A01_09, 1, 1))
+
+chrIV <- biallelic %>% filter(CHROM == "chrIV")
+
+
+# Create a combined plot with y-axis labels and custom legend title
+wine_vs_lab <- ggplot() +  
+  geom_jitter(data = chrIV, aes(x = POS, y = 0.2, color = A01_62_genotype), size = 2, width = 0.2, height = 0.1) +
+  geom_jitter(data = chrIV, aes(x = POS, y = 0.45, color = A01_09_genotype), size = 2, width = 0.2, height = 0.1) +
+  labs(title = "Genotype by Position on Chromosome IV", x = "Position") +
+  scale_color_manual(values = c("black", "blue", "red"), 
+                     labels = c("Missing", "REF", "ALT"),
+                     name = "Genotype") + 
+  scale_y_continuous(breaks = c(0.2, 0.45), labels = c("Strain A01_62", "Strain A01_09")) +
+  theme(axis.ticks.y = element_blank(),
+        axis.title.y = element_blank())
+ggsave("wine_vs_lab.png", scale = 1.5)

@@ -84,3 +84,11 @@ with open('DP.txt', 'w') as dp_file:
 #When the genotype does not match the reference, it is usually in a single read in a single sample, so it might just be sequencing error
 
 ### Question 4.2 ###
+
+#I decided to look at one strain that mostly matched the lab adapted strain and one strain that mostly matched the wine strain in the previous question
+#Therefore I also decided to use the same chromosome we were looking at previously
+#Even though in the smaller section of chrIV (192829-205454) these strains derived most of their ancestry from a single parent strain...
+#across the full chromosome, they do have a mix of ancestry from each parent
+#The transitions between colors indicate a crossing over event
+#You can also tell from this plot that some areas of the genome have fewer variants than others 
+#It seems like there are some haplotype blocks visible where a set of variants was inherited together, since the transition point is the same in each plot
