@@ -14,15 +14,18 @@ ggplot(AF_dist, aes(x = allele_frequency)) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.y = element_line(color = "light gray"),
-        panel.grid.minor.y = element_line(color = "light gray")) 
+        panel.grid.minor.y = element_line(color = "light gray"))
+ggsave("AF_dist.png")
 
 ggplot(DP_dist, aes(x = read_depth)) +
-  geom_histogram(bins = 21) +
+  geom_histogram(bins = 20, color = "white") +
   labs(title = "Read depth distribution", x = "Read depth", y = "Number of samples") +
-  scale_x_continuous(breaks = seq(0, 20, by = 1)) +
+  scale_x_continuous(breaks = seq(1, 20, by = 1)) +
   theme(panel.background = element_blank(),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.y = element_line(color = "light gray"),
         panel.grid.minor.y = element_line(color = "light gray")) 
+ggsave("DP_dist.png")
+
 
