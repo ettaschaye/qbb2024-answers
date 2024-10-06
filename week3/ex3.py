@@ -71,3 +71,7 @@ with open('biallelic.vcf') as infile:
 with open('DP.txt', 'w') as dp_file:
     for dp in dp_values:
         dp_file.write(f"{dp}\n")  #Write each read depth on a new line
+
+### Question 3.2 ###
+#This looks like a Poisson distribution with a lamda of around 5, which is what I would expect from what I saw while browsing IGV.
+#However, as I mentioned in question 2.4, I did originally think the genome coverage would be higher.
