@@ -75,3 +75,12 @@ with open('DP.txt', 'w') as dp_file:
 ### Question 3.2 ###
 #This looks like a Poisson distribution with a lamda of around 5, which is what I would expect from what I saw while browsing IGV.
 #However, as I mentioned in question 2.4, I did originally think the genome coverage would be higher.
+
+
+### Question 4.1 ###
+#By eye, I would guess samples 24, 27, 31, 62, and 63 derive their ancestry from the wine strain. 
+#There are many variants that exist robustly (aka in several reads) in these samples only. 
+#In the rest of the samples, the genotype generally matches the reference (which comes from the lab strain)
+#When the genotype does not match the reference, it is usually in a single read in a single sample, so it might just be sequencing error
+
+### Question 4.2 ###
