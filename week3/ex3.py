@@ -35,7 +35,6 @@ with open('AF.txt', 'w') as outfile:
 
 
 
-
 ### Question 3.1 ###
 
 #This looks somewhat expected to me. Since these are recombinant lines where one parent strain is lab adapted and the other is a wine strain,
