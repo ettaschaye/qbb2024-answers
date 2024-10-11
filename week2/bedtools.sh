@@ -82,7 +82,8 @@ for file in chr1_snps_*.bed
         SNPs_2=$(awk '{s+=$4}END{print s}' "$tmp_file_name_2")
         LENG_2=$(awk '{l+=$6}END{print l}' "$tmp_file_name_2")
         enrichment=$(echo "${SNPs_2}/${LENG_2}/${background}" | bc -l)
-        echo -e "${file}\t${feature_file}\t${enrichment}" >> snp_counts.txt
+        echo -e "${file}\t${feature_file}\t${enrichment}"
+         >> snp_counts.txt
     done
 
 done
