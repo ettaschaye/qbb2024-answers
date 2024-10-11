@@ -48,3 +48,10 @@ I think chr1_snps_0.1.bed and equivalent files are the SNPs partitioned by minor
 
 The features we are using are exons, introns, cCREs (regulatory elements), and other.
 
+### Step 2.3
+1. Which feature appears to be under the highest level of purifying (negative) selection? How can you tell?
+Exons are under the highest level of purifying selection, because mutations in exons are most likely to have functional consequences and functional consequences are rarely good! So there is less variation in exons in general, and that variation mostly exists at low frequency in the population. I can tell because there are fewer exonic polymorphisms than in other features, likely because they are deleterious. 
+2. Why do you think most features start out more enriched at lower MAFs and become more depleted as the MAF increases? 
+Here are a few reasons that come to mind: The minor allele frequency is generally the frequency of the second most common allele, so it will always be lower than 0.5. Sometimes there are more than two alleles. Most variation in the human genome exists at low frequencies. 
+3. Does the relative levels of enrichment/depletion of features with respect to each other make sense? Explain.
+In general it does make sense that exons have fewer SNPs than the other features. However, I am surprised that there is so much variation in regulatory elements. Maybe there is more redundancy in regulation that prevents negative consequences from occuring in those harboring mutations?
