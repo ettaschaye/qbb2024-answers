@@ -25,6 +25,8 @@ It looks like for both files, the per-base sequence content is variable at the s
 CTTGACCAAGATGAAACTGTTCGTATTCCTGGCCTTGGCCGTGGCCGCAA : The *Drosophila* serine protease gene is most overrepresented in both files, which makes sense because it would be involved in digestion 
 
 ##  Step 2 ##
+- I don't see any samples with more than 45% unique reads, so I would not keep any. 
+- I can see the triplicates! This heat map is made of little 3 x 3 grids that represent the similarity between all replicates of two samples. I think the samples are consistent between replicates because they tend to have high similarity to each other.
 
 ##  Step 3.3 ##
 
