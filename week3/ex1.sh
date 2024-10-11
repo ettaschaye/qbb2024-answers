@@ -45,7 +45,11 @@ bwa index sacCer3.fa #index
 # .pac: binary, packaged sequence (four base pairs encode one byte)
 # .sa: binary, suffix array index
 
-#There are 16 chromosomes in the yeast genome
+
+# There are 17 chromosomes in the yeast genome
+grep "chr" sacCer3.fa # Check matches for the pattern "chr" and confirm by eye that it looks correct
+grep "chr" sacCer3.fa | wc -l # Count the number of matches for the pattern
+
 
 #Let's write a for loop
 
