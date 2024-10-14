@@ -1,58 +1,25 @@
-# #!/bin/sh
-# # ## Exercise 1
-# # ### Steps 1.1 through 1.3 
-# # I downloaded 3 files from the UCSC Genome Table Browser ("https://genome.ucsc.edu/cgi-bin/hgTables")
-# # 1. gene.bed: contains the known gene on Chr1
-# # 2. chr1_exons2.bed: contains the known coding exons on Chr1
-# # 3. cCREs.bed: contains the regulatory elements on Chr1
+#!/bin/sh
 
-# # ### Step 1.4 
-# # There are many isoforms of gene, so some regions in the genome are represented multiple times in the gene and exon .bed files. We want to create a file without overlapping ranges. 
+# ## Exercise 2
+# I will be finding how many SNPs overlap each, finding the mean SNP/bp for each feature and then calculating the enrichment of each feature SNP density for each minor allele frequency
 
-# # First we sort the file by chromosome and coordinate. By default, bedtools sort sorts a .bed file first by chromosome and then by start position (in ascending order) ("https://bedtools.readthedocs.io/en/latest/content/tools/sort.html)  
+# ### Step 2.1 
+# I need to write a bash script that loops through every minor allele frequency file and each feature bed file and use bedtools coverage to figure out how mant SNPs fall within each set of features
 
-# # You can either say bedtools sort or use sortBed, they are equivalent
-# sortBed -i gene.bed > gene_sorted.bed
-# sortBed -i chr1_exons2.bed > exons_sorted.bed
-# sortBed -i cCREs.bed > cCREs_sorted.bed
+# I think chr1_snps_0.1.bed and equivalent files are the SNPs partitioned by minor allele frequency (0.1, 0.2, 0.3, 0.4, 0.5). I'm curious if 0.1 would be 0.0 through 0.0. I assume yes because these are all pretty common variants othersswise)
 
-# # When we merge, we are collapsing repeating features within an individual file, not merging the files
-# # bedtools merge
+# The features we are using are exons, introns, cCREs (regulatory elements), and others.
 
-# bedtools merge -i gene_sorted.bed > gene_chr1.bed
-# bedtools merge -i exons_sorted.bed > exons_chr1.bed
-# bedtools merge -i cCREs_sorted.bed > cCREs_chr1.bed
+# The feature files are:
+# exons_chr1.bed (exon feature file)
+# introns_chr1.bed (intron feature file)
+# cCREs_chr1.bed (regulatory elements feature file)
+# others_chr1.bed (others feature file)
 
-# # One of the files from chr1_snps.tar.gz is the full chromosome 
+# The MAF files are: chr1_snps_0.1.bed, chr1_snps_0.2.bed, chr1_snps_0.3.bed, chr1_snps_0.4.bed, chr1_snps_0.5.bed
+# The structure of these is they have |chromosome number| SNP postion | SNP postion + 1| identifier 
 
-# # ### Step 1.5 
-# # I will remove exons from the merged gene file using the merged exon file
-# # bedtools subtract 
-# bedtools subtract -a gene_chr1.bed -b exons_chr1.bed > introns_chr1.bed
-# # ### Step 1.6
-# # I will take the full genome_chr1.bed file and subtract exon, intron, and cCRE files 
-# bedtools subtract -a genome_chr1.bed -b exons_chr1.bed introns_chr1.bed cCREs_chr1.bed > others_chr1.bed
-
-# # ## Exercise 2
-# # I will be finding how many SNPs overlap each, finding the mean SNP/bp for each feature and then calculating the enrichment of each feature SNP density for each minor allele frequency
-
-# # ### Step 2.1 
-# # I need to write a bash script that loops through every minor allele frequency file and each feature bed file and use bedtools coverage to figure out how mant SNPs fall within each set of features
-
-# # I think chr1_snps_0.1.bed and equivalent files are the SNPs partitioned by minor allele frequency (0.1, 0.2, 0.3, 0.4, 0.5). I'm curious if 0.1 would be 0.0 through 0.0. I assume yes because these are all pretty common variants othersswise)
-
-# # The features we are using are exons, introns, cCREs (regulatory elements), and others.
-
-# # The feature files are:
-# # exons_chr1.bed (exon feature file)
-# # introns_chr1.bed (intron feature file)
-# # cCREs_chr1.bed (regulatory elements feature file)
-# # others_chr1.bed (others feature file)
-
-# # The MAF files are: chr1_snps_0.1.bed, chr1_snps_0.2.bed, chr1_snps_0.3.bed, chr1_snps_0.4.bed, chr1_snps_0.5.bed
-# # The structure of these is they have |chromosome number| SNP postion | SNP postion + 1| identifier 
-
-# # Maybe the goal here is to figure out how much coverage each kind of element received?
+# Maybe the goal here is to figure out how much coverage each kind of element received?
 
 # We will calculate bedtools coverage of the feature bedtool with the respective MAF
 # Start with outer loop, loop through MAF files
