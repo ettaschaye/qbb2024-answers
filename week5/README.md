@@ -29,5 +29,12 @@ CTTGACCAAGATGAAACTGTTCGTATTCCTGGCCTTGGCCGTGGCCGCAA : The *Drosophila* serine pro
 - I can see the triplicates! This heat map is made of little 3 x 3 grids that represent the similarity between all replicates of two samples. I think the samples are consistent between replicates because they tend to have high similarity to each other.
 
 ##  Step 3.3 ##
+I'm not totally sure what the issue with the PCA plot is. The only real issues I see are that the midgut sections don't separate particularly well in PC space. Also, in PC1, the 1st replicates from Fe and LPC-Fe are separated from the other two replicates from both sections. So if the replicates across different cell types were handled separately, there might be some batch effects. 
 
 ##  Step 3.6 ##
+This looks weird to me. I would not expect most of these to be processes that the gut is responsible for. In particular, there is upregulation of eye and vision related genes. 
+
+## Advanced exercises ##
+The gene ontology report was pretty surprising. I have two ideas. Either the samples were contaminated with other tissues, or some of the genes could be coming from the stem cells the paper mentioned. 
+
+None of this looks how I would expect
