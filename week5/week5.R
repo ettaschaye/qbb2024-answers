@@ -58,6 +58,7 @@ meanSdPlot(assay(narrowVstdata))
 narrowPcaData = plotPCA(narrowVstdata,intgroup=c("rep","tissue"), returnData=TRUE)
 ggplot(narrowPcaData, aes(PC1, PC2, color=tissue, shape=rep)) +
   geom_point(size=5)
+ggsave(filename = "PCA_plot.png")
 
 #calculate standard deviations 
 sds = apply(assay(narrowVstdata), 1, sd)
