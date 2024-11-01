@@ -71,29 +71,57 @@ m1 <- lm(formula = WASH7P ~ DTHHRDY + AGE + SEX, data = vsd_df) %>%
   tidy()
 #Step 2.1
 #2.1.1
-#It seems like WASH7P is slightly upregulated in males, but the result is not significant (2.792437e-01)
+#It seems like WASH7P is slightly upregulated in males, but the result is not significant (p value: 2.792437e-01)
 #Females were used as the reference group and the estimate for males is higher than the reference group
 #2.1.2
-
+m2 <- lm(formula = SLC25A47 ~ DTHHRDY + AGE + SEX, data = vsd_df) %>%
+  summary() %>%
+  tidy()
+#This gene also appears upregulated in males but this result is more significant
 
 #Step 2.2 
 #2.2.1
+dds <- DESeq(dds)
 
 #Step 2.3
 #2.3.1
+res <- results(dds, name = "SEX_male_vs_female")  %>%
+  as_tibble(rownames = "GENE_NAME")
 #2.3.2
+res %>% filter(padj < 0.1)
+
+#262 genes have an FDR below 10%, but none have an FDR of exactly 0.1
+
 #2.3.3
+chrom <- read_delim("gene_locations.txt")
+genes_mapped <- res %>% left_join(chrom, by = "GENE_NAME") %>% arrange(padj)
+#Unsurprisingly, my top hits are Y-chromosome genes upregulated in males
+#There are also X-chromosome genes downregulated in males 
 #2.3.4
+genes_mapped %>% filter(GENE_NAME == "WASH7P")
+genes_mapped %>% filter(GENE_NAME == "MAP7D2")
+#Here it looks like MAP7D2 is actually downregulated in males and it is a very signficiant result
+#and WASH7P is weakly upregulated in males and it is not significant (which is consistent with the lm)
 
 #Step 2.4
 #2.4.1 
+res2 <- results(dds, name = "DTHHRDY_ventilator_case_vs_fast_death_of_natural_causes")  %>%
+  as_tibble(rownames = "GENE_NAME")
 #2.4.2
-
+res2 %>% filter(padj < 0.1)
+#16,069 genes are differentially expressed
+#Given that these are blood cells, we would not expect there to be a huge number
+#of sex-specific differences in gene expression
+#However, people on ventilators are more likely to be very sick and/or old, so maybe
+#that accounts for differences in gene expression
 
 #Exercise 3
 #Step 3.1
-
-#3.1.1
+ggplot(data = res, aes(x = log2FoldChange, y = padj )) +
+  geom_point(aes(color = ifelse(padj < 0.1 & log2FoldChange > 1, "yes", "no"))) +
+  scale_color_manual(values = c("yes" = "red", "no" = "black")) +
+  labs(title = "Differential gene expression by sex", color = "Significantly upregulated?")
+ggsave(filename = "volcano_plot.png")
 
 #Advanced exercises 
 
