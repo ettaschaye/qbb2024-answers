@@ -40,3 +40,37 @@ gut_counts <- logNormCounts(gut)
 plotReducedDim(gut, "X_umap", colour_by = "broad_annotation")
 
 #Exercise 2
+genecounts <- rowSums(assay(gut))
+summary(genecounts)
+#The mean is 3185
+#The median is 254
+#It seems like some genes with very high counts are skewing the mean
+
+sort(genecounts, decreasing =  TRUE)
+?sort
+#The genes with the highest expression are...
+#lncRNA:Hsromega 601414, pre-rRNA:CR45845 470729, lncRNA:roX1 291965
+#At least two of these are non-coding RNAs
+
+cellcounts <- colSums(assay(gut))
+hist(cellcounts)
+summary(cellcounts)
+
+#The mean number of counts per cell is 3622
+#I'm not sure why some cells have really high counts, I will come back to that question
+
+celldetected <- colSums(assay(gut)>0) 
+hist(celldetected)
+summary(celldetected)
+
+#The mean number of genes per cell is 1059
+
+1059/13407
+
+#This is 0.07898859 of the total genes in the dataset
+
+gut_names <- rownames(gut)
+mito <- grep(pattern = "^mt:", gut_names, value = TRUE)
+df <- perCellQCMetrics(gut, subsets=list(Mito=mito))
+df <- as.data.frame(df)
+summary(df)
