@@ -83,4 +83,39 @@ ggsave(filename = "mito_plot.png", plot = last_plot())
 #Cell types that are highly metabolic, particularly cancer cells would have higher mitochondrial activity
 
 #Exercise 3
+coi <- colData(gut)$broad_annotation == "epithelial cell"
+epi <- gut[, coi]
+plotReducedDim(epi, "X_umap", colour_by = "annotation")
+ggsave(filename = "epi_umap.png", plot = last_plot())
 
+marker.info <- scoreMarkers( epi, colData(epi)$annotation )
+
+chosen <- marker.info[["enterocyte of anterior adult midgut epithelium"]]
+ordered <- chosen[order(chosen$mean.AUC, decreasing=TRUE),]
+head(ordered[,1:4])
+
+# The top genes are mostly carbohydrate-digestion related 
+# Mal-A6:
+# Men-b:
+# vnd
+# betaTr
+# Mal-A1
+# Nhe2
+
+som <- colData(gut)$broad_annotation == "somatic precursor cell"
+som_1 <- gut[, som]
+plotReducedDim(som_1, "X_umap", colour_by = "annotation")
+ggsave(filename = "som_1_umap.png", plot = last_plot())
+
+marker.info <- scoreMarkers( som_1, colData(som_1)$annotation )
+
+intest <- marker.info[["intestinal stem cell"]]
+intest_ordered <- intest[order(intest$mean.AUC, decreasing=TRUE),]
+head(intest[,1:4])
+
+#Top genes are 128up, 14-3-3epsilon, 14-3-3zeta, 140up, 18SrRNA-Psi:CR41602, 18w
+
+goi <- rownames(intest)[1:6]
+plotExpression(gut, goi)
+
+# 14-3-3zeta looks most specific for intestinal stem cells
