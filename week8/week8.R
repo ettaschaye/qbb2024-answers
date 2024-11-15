@@ -74,3 +74,13 @@ mito <- grep(pattern = "^mt:", gut_names, value = TRUE)
 df <- perCellQCMetrics(gut, subsets=list(Mito=mito))
 df <- as.data.frame(df)
 summary(df)
+colData(gut) <- cbind( colData(gut), df )
+
+plotColData(gut, y = "subsets_Mito_percent", x = "broad_annotation") +
+  theme( axis.text.x=element_text( angle=90 ) ) 
+ggsave(filename = "mito_plot.png", plot = last_plot())
+
+#Cell types that are highly metabolic, particularly cancer cells would have higher mitochondrial activity
+
+#Exercise 3
+
