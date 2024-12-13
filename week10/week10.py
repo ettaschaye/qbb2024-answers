@@ -87,6 +87,25 @@ from pathlib import Path
 
 #Let's try this again
 
+# Define functions that are needed later
+    # Filter by size 
+def filter_by_size(labels, minsize, maxsize):
+    # Find label sizes
+    sizes = np.bincount(labels.ravel())
+    # Iterate through labels, skipping background
+    for i in range(1, sizes.shape[0]):
+        # If the number of pixels falls outsize the cutoff range, relabel as background
+        if sizes[i] < minsize or sizes[i] > maxsize:
+            # Find all pixels for label
+            where = np.where(labels == i)
+            labels[where] = 0
+    # Get set of unique labels
+    ulabels = np.unique(labels)
+    for i, j in enumerate(ulabels):
+        # Relabel so labels span 1 to # of labels
+        labels[np.where(labels == j)] = i
+    return labels
+
 # Specify the directory where your images are stored
 directory = Path("/Users/cmdb/qbb2024-answers/week10/")
 
@@ -236,16 +255,17 @@ for gene in genes:
                 # Relabel so labels span 1 to # of labels
                 labels[np.where(labels == j)] = i
             return labels
-
         labels = find_labels(mask_DAPI)
-        print(labels)
-    #     matplotlib.pyplot.imshow(labels, cmap = "gray")
-    #     matplotlib.pyplot.show()
-
-
-    #Then filter by size using filter by size
-    #Filter out small objects
-    #Exclude the background 
-    #Mean of sizes, standard deviation, filter again 
-    #Then find the signals
-    
+        # print(labels)
+        #matplotlib.pyplot.imshow(labels, cmap = "gray")
+        #matplotlib.pyplot.show()
+        #Filter by size
+        filter_by_size(labels, 100, 1000000)
+        # Find the sizes for each item
+        sizes = np.bincount(labels.ravel())
+        # print(sizes)
+        # Filter again, using mean size +/- sd as upper and lower bounds 
+        filter_by_size(sizes, (np.mean(sizes) - np.std(sizes)), (np.mean(sizes) + np.std(sizes)))
+        print(sizes)
+        # matplotlib.pyplot.imshow(labels, cmap = "gray")
+        # matplotlib.pyplot.show()
