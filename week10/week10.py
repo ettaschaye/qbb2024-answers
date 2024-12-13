@@ -123,19 +123,126 @@ for gene in genes:
             # plt.show()
             # Add the array for each channel to the list channel_images
             channel_images.append(img)
-            # Stack the third dimension of the array into a new array called merged_array
-            merged_array = np.dstack(channel_images)
-        separate_images[f"{gene}_field{field}"] = merged_array  
-        # #Confirm that the shape of the array is (520, 616, 3) and the image looks normal
-        # print(merged_array.shape)
-        # plt.imshow(merged_array)
-        # plt.axis('off')
-        # plt.show()
+        # Stack the third dimension of the array into a new array called merged_array
+        merged_array = np.dstack(channel_images)
 
-    
+        # For Exercise 2:
+        # Select just DAPI channel
+        DAPI = merged_array[:, :, 0]
+        # Calculate the mean value across the DAPI array
+        mean_DAPI = np.mean(DAPI)
+        # Produce a boolean array where TRUE = value above the mean and FALSE = value below the mean
+        mask_DAPI = DAPI > mean_DAPI
+        # # Display the mask 
+        # plt.imshow(mask_DAPI, cmap='gray')  # 'gray' colormap for a binary mask
+        # plt.title('Mask for DAPI Channel (Above Mean)')
+        # plt.axis('off')  # Hide axis labels
+        # plt.show()    
+     # Find_labels function from live coding
+        def find_labels(mask_DAPI):
+            # Set initial label
+            l = 0
+            # Create array to hold labels
+            labels = np.zeros(mask_DAPI.shape, np.int32)
+            # Create list to keep track of label associations
+            equivalence = [0]
+            # Check upper-left corner
+            if mask_DAPI[0, 0]:
+                l += 1
+                equivalence.append(l)
+                labels[0, 0] = l
+            # For each non-zero column in row 0, check back pixel label
+            for y in range(1, mask_DAPI.shape[1]):
+                if mask_DAPI[0, y]:
+                    if mask_DAPI[0, y - 1]:
+                        # If back pixel has a label, use same label
+                        labels[0, y] = equivalence[labels[0, y - 1]]
+                    else:
+                        # Add new label
+                        l += 1
+                        equivalence.append(l)
+                        labels[0, y] = l
+            # For each non-zero row
+            for x in range(1, mask_DAPI.shape[0]):
+                # Check left-most column, up  and up-right pixels
+                if mask_DAPI[x, 0]:
+                    if mask_DAPI[x - 1, 0]:
+                        # If up pixel has label, use that label
+                        labels[x, 0] = equivalence[labels[x - 1, 0]]
+                    elif mask_DAPI[x - 1, 1]:
+                        # If up-right pixel has label, use that label
+                        labels[x, 0] = equivalence[labels[x - 1, 1]]
+                    else:
+                        # Add new label
+                        l += 1
+                        equivalence.append(l)
+                        labels[x, 0] = l
+                # For each non-zero column except last in nonzero rows, check up, up-right, up-right, up-left, left pixels
+                for y in range(1, mask_DAPI.shape[1] - 1):
+                    if mask_DAPI[x, y]:
+                        if mask_DAPI[x - 1, y]:
+                            # If up pixel has label, use that label
+                            labels[x, y] = equivalence[labels[x - 1, y]]
+                        elif mask_DAPI[x - 1, y + 1]:
+                            # If not up but up-right pixel has label, need to update equivalence table
+                            if mask_DAPI[x - 1, y - 1]:
+                                # If up-left pixel has label, relabel up-right equivalence, up-left equivalence, and self with smallest label
+                                labels[x, y] = min(equivalence[labels[x - 1, y - 1]], equivalence[labels[x - 1, y + 1]])
+                                equivalence[labels[x - 1, y - 1]] = labels[x, y]
+                                equivalence[labels[x - 1, y + 1]] = labels[x, y]
+                            elif mask_DAPI[x, y - 1]:
+                                # If left pixel has label, relabel up-right equivalence, left equivalence, and self with smallest label
+                                labels[x, y] = min(equivalence[labels[x, y - 1]], equivalence[labels[x - 1, y + 1]])
+                                equivalence[labels[x, y - 1]] = labels[x, y]
+                                equivalence[labels[x - 1, y + 1]] = labels[x, y]
+                            else:
+                                # If neither up-left or left pixels are labeled, use up-right equivalence label
+                                labels[x, y] = equivalence[labels[x - 1, y + 1]]
+                        elif mask_DAPI[x - 1, y - 1]:
+                            # If not up, or up-right pixels have labels but up-left does, use that equivalence label
+                            labels[x, y] = equivalence[labels[x - 1, y - 1]]
+                        elif mask_DAPI[x, y - 1]:
+                            # If not up, up-right, or up-left pixels have labels but left does, use that equivalence label
+                            labels[x, y] = equivalence[labels[x, y - 1]]
+                        else:
+                            # Otherwise, add new label
+                            l += 1
+                            equivalence.append(l)
+                            labels[x, y] = l
+                # Check last pixel in row
+                if mask_DAPI[x, -1]:
+                    if mask_DAPI[x - 1, -1]:
+                        # if up pixel is labeled use that equivalence label 
+                        labels[x, -1] = equivalence[labels[x - 1, -1]]
+                    elif mask_DAPI[x - 1, -2]:
+                        # if not up but up-left pixel is labeled use that equivalence label 
+                        labels[x, -1] = equivalence[labels[x - 1, -2]]
+                    elif mask_DAPI[x, -2]:
+                        # if not up or up-left but left pixel is labeled use that equivalence label 
+                        labels[x, -1] = equivalence[labels[x, -2]]
+                    else:
+                        # Otherwise, add new label
+                        l += 1
+                        equivalence.append(l)
+                        labels[x, -1] = l
+            equivalence = np.array(equivalence)
+            # Go backwards through all labels
+            for i in range(1, len(equivalence))[::-1]:
+                # Convert labels to the lowest value in the set associated with a single object
+                labels[np.where(labels == i)] = equivalence[i]
+            # Get set of unique labels
+            ulabels = np.unique(labels)
+            for i, j in enumerate(ulabels):
+                # Relabel so labels span 1 to # of labels
+                labels[np.where(labels == j)] = i
+            return labels
+
+        labels = find_labels(mask_DAPI)
+        print(labels)
+    #     matplotlib.pyplot.imshow(labels, cmap = "gray")
+    #     matplotlib.pyplot.show()
 
 
-    #Once I figure out how to structure my image, need to get mean DAPI signal and use find labels where you pass an image but only greater or equal to the mean
     #Then filter by size using filter by size
     #Filter out small objects
     #Exclude the background 
