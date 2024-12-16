@@ -285,24 +285,27 @@ for gene in genes:
         # 1. Mean PCNA signal
         # 2. Mean nascent RNA signal 
         # 3. log2-transformed ratio of mean nascent RNA signal to mean PCNA signal
+
         # Select just PCNA channel
         PCNA = merged_array[:, :, 1]
-
         # Select just nascent RNA channel
         nascentRNA = merged_array[:, :, 2]
-
+        # Determine the number assigned to the last nucelus 
         nucleus_max = np.amax(labels)
 
-    
-
         for i in range(1, nucleus_max+1):
+            #Determine the positions of nucelus i 
             positions = np.where(labels == i)
+            #Find the PCNA intensity for all the pixels in nucleus i
             PCNA_pixel = PCNA[positions]
+            #Find the nascent RNA intensity for all the pixels in nucleus i
             RNA_pixel = nascentRNA[positions]
-            
+            #Calculate the mean PCNA intensity for all the pixels in nucleus i 
             PCNA_mean = np.mean(PCNA_pixel)
+            #Calculate the mean nascent RNA intensity for all the pixels in nucleus i 
             RNA_mean = np.mean(RNA_pixel)
-            log2_ratio = np.log2(PCNA_mean/RNA_mean)
+            #Calculate the log2-transformed ratio of mean PCNA intensity to mean 
+            log2_ratio = np.log2(RNA_mean/PCNA_mean)
             fs.write(f"{gene}\t{RNA_mean}\t{PCNA_mean}\t{log2_ratio}\n")
             
 fs.close()
