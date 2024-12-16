@@ -114,8 +114,11 @@ genes = ['APEX1', 'PIM2', 'POLR2B', 'SRSF1']
 fields = [0, 1]  # field0 and field1
 channels = ['DAPI', 'PCNA', 'nascentRNA']
 
-# Make an empty list to store three-channel images
-separate_images = {}
+# Make an empty dictionary to store three-channel images
+three_channel_images = {}
+
+fs = open('data.tsv', 'w')
+fs.write("Gene\tRNA_mean\tPCNA_mean\tlog2_ratio\n")
 
 # Loop through all genes and both fields
 for gene in genes:
@@ -141,9 +144,11 @@ for gene in genes:
             # plt.axis('off')
             # plt.show()
             # Add the array for each channel to the list channel_images
-            channel_images.append(img)
+            channel_images.append(img)  
         # Stack the third dimension of the array into a new array called merged_array
+        #Instead of stacking, I can make a blank image
         merged_array = np.dstack(channel_images)
+        three_channel_images[f"{gene}_{fields}"] = merged_array
 
         # For Exercise 2:
         # Select just DAPI channel
@@ -151,7 +156,7 @@ for gene in genes:
         # Calculate the mean value across the DAPI array
         mean_DAPI = np.mean(DAPI)
         # Produce a boolean array where TRUE = value above the mean and FALSE = value below the mean
-        mask_DAPI = DAPI > mean_DAPI
+        mask_DAPI = DAPI >= mean_DAPI
         # # Display the mask 
         # plt.imshow(mask_DAPI, cmap='gray')  # 'gray' colormap for a binary mask
         # plt.title('Mask for DAPI Channel (Above Mean)')
@@ -256,16 +261,61 @@ for gene in genes:
                 labels[np.where(labels == j)] = i
             return labels
         labels = find_labels(mask_DAPI)
+        #Output is an array where each number corresponds to a nucleus, except 0 which is the background 
         # print(labels)
         #matplotlib.pyplot.imshow(labels, cmap = "gray")
         #matplotlib.pyplot.show()
         #Filter by size
         filter_by_size(labels, 100, 1000000)
         # Find the sizes for each item
+        # It returns the number of pixels corresponding to each number (which each correspond to one nucleus except 0 which is the background)
         sizes = np.bincount(labels.ravel())
+        # I need to remove 0 because it is the background and I don't want to apply my calculations to it 
+        # I can also increase the size of all the nuclei to help distinguish the early nuclei from the background
+
         # print(sizes)
         # Filter again, using mean size +/- sd as upper and lower bounds 
-        filter_by_size(sizes, (np.mean(sizes) - np.std(sizes)), (np.mean(sizes) + np.std(sizes)))
-        print(sizes)
+        labels = filter_by_size(sizes, (np.mean(sizes) - np.std(sizes)), (np.mean(sizes) + np.std(sizes)))
+       
         # matplotlib.pyplot.imshow(labels, cmap = "gray")
         # matplotlib.pyplot.show()
+
+        # Exercise 3 
+        # For each nucleus, find:
+        # 1. Mean PCNA signal
+        # 2. Mean nascent RNA signal 
+        # 3. log2-transformed ratio of mean nascent RNA signal to mean PCNA signal
+        # Select just PCNA channel
+        PCNA = merged_array[:, :, 1]
+
+        # Select just nascent RNA channel
+        nascentRNA = merged_array[:, :, 2]
+
+        nucleus_max = np.amax(labels)
+
+    
+
+        for i in range(1, nucleus_max+1):
+            positions = np.where(labels == i)
+            PCNA_pixel = PCNA[positions]
+            RNA_pixel = nascentRNA[positions]
+            
+            PCNA_mean = np.mean(PCNA_pixel)
+            RNA_mean = np.mean(RNA_pixel)
+            log2_ratio = np.log2(PCNA_mean/RNA_mean)
+            fs.write(f"{gene}\t{RNA_mean}\t{PCNA_mean}\t{log2_ratio}\n")
+            
+fs.close()
+
+#Exercise 3 questions 
+#This study looked at siRNA-based knockdown of genes that might impact RNA production and DNA replication 
+#The nascent RNA intensity indicates how much transcription is occuring (in general) and the PCNA intensity measures how much replication is occurring
+#I think PCNA intensity is being used to control for cell cycle stage, which can broadly impact transcription 
+
+
+
+
+
+
+        
+
